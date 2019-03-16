@@ -36,9 +36,9 @@ class UserModel {
         if (err) callback(new Error("User not found."));
         callback(
           user.password ===
-          pbkdf2
-            .pbkdf2Sync(password, user.salt, 16, 16, "sha512")
-            .toString("hex")
+            pbkdf2
+              .pbkdf2Sync(password, user.salt, 16, 16, "sha512")
+              .toString("hex")
             ? user
             : new Error("Wrong password.")
         );
