@@ -1,8 +1,8 @@
 .App {
   text-align: center;
   width: auto;
-  margin-left: 3;
-  margin-right: 3;
+  margin-left: 16px;
+  margin-right: 16px;
 
   @media screen and (min-width: 1106px) {
     width: 1100px;
@@ -36,7 +36,22 @@
       right: 24px;
     }
     div {
-      background: #e0e0e0;
+      width: 100%;
+      height: 320px;
+      background: #606060;
+      img {
+        margin: 0 auto;
+        height: 100%;
+      }
     }
+  }
+
+  .mainGrid {
+    margin-top: 24px;
+  }
+
+  .sidebarAboutBox {
+    padding: 16px;
+    background-color: #eee;
   }
 }

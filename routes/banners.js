@@ -8,7 +8,7 @@ router.get("/", function(req, res, next) {
     null,
     {
       sort: {
-        _id: -1
+        sequence: 1
       }
     },
     (err, list) => {

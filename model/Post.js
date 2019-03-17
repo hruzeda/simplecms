@@ -2,8 +2,6 @@ const mongoose = require("mongoose");
 
 const schema = new mongoose.Schema(
   {
-    image: String,
-    thumb: String,
     title: String,
     content: String
   },
