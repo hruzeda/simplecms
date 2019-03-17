@@ -8,12 +8,12 @@ const schema = new mongoose.Schema(
     content: String
   },
   {
-    collection: "Page"
+    collection: "Post"
   }
 );
 
-/*class PageModel {
+/*class PostModel {
   
 }
-schema.loadClass(PageModel);*/
-module.exports = mongoose.connection.model("Page", schema);
+schema.loadClass(PostModel);*/
+module.exports = mongoose.connection.model("Post", schema);

@@ -9,5 +9,8 @@
     "transform-decorators",
     "transform-react-constant-elements",
     "transform-react-inline-elements"
+  ],
+  "ignore": [
+    "**/*.test.js"
   ]
 }

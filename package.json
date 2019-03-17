@@ -1,10 +1,10 @@
 {
   "name": "simplecms",
-  "version": "0.0.1",
+  "version": "0.3.3",
   "private": true,
   "scripts": {
-    "clean": "rm -rf webapp/public/css/* & rm -rf webapp/public/js/*",
-    "babel": "babel webapp/src/**.js -o webapp/public/js/app.min.js --minified",
+    "clean": "rm -rf webapp/public/css/* & cp -rf webapp/node_modules/slick-carousel/slick/fonts webapp/public/css/fonts & rm -rf webapp/public/js/*",
+    "babel": "babel webapp/src/**/**.js -o webapp/public/js/app.min.js --minified",
     "eslint": "eslint {bin,routes,model}/**/*.js",
     "sass": "sass webapp/src/index.scss webapp/public/css/style.css",
     "build": "npm run clean && npm run eslint && npm run babel && npm run sass",

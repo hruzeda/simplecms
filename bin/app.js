@@ -9,6 +9,9 @@ const mongoose = require("mongoose");
 const indexRouter = require("../routes");
 const usersRouter = require("../routes/users");
 const pagesRouter = require("../routes/pages");
+const bannersRouter = require("../routes/banners");
+const postsRouter = require("../routes/posts");
+const dynamicBlocksRouter = require("../routes/dynamicBlocks");
 
 const mongoDB = "mongodb://127.0.0.1/simplecms";
 mongoose.connect(mongoDB);
@@ -57,6 +60,9 @@ app.use(
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/pages", pagesRouter);
+app.use("/banners", bannersRouter);
+app.use("/posts", postsRouter);
+app.use("/dynamicBlocks", dynamicBlocksRouter);
 //app.use(express.static(path.join(__dirname, "public")));
 
 // catch 404 and forward to error handler
