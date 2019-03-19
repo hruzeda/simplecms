@@ -186,7 +186,7 @@ class App extends Component {
   renderPosts() {
     const posts = this.state.posts ? this.state.posts : [];
     return posts.map(post => (
-      <Card className="post">
+      <Card className="post" key={post._id}>
         <div className="postDetails">
           <CardContent>
             <Typography component="h2" variant="h5">
@@ -206,7 +206,7 @@ class App extends Component {
         <Hidden xsDown>
           <CardMedia
             className="postMedia"
-            image={post._id + ".jpg"}
+            image={"img/upload/thumb/" + post._id + ".jpg"}
             title={post.title}
           />
         </Hidden>
