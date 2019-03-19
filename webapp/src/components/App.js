@@ -10,6 +10,11 @@ import Slider from "react-slick";
 import Grid from "@material-ui/core/Grid";
 import Divider from "@material-ui/core/Divider";
 import Paper from "@material-ui/core/Paper";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import CardMedia from "@material-ui/core/CardMedia";
+import Hidden from "@material-ui/core/Hidden";
+import TextField from "@material-ui/core/TextField";
 
 class App extends Component {
   constructor(props) {
@@ -172,42 +177,64 @@ class App extends Component {
   renderBanners() {
     const banners = this.state.banners ? this.state.banners : [];
     return banners.map(banner => (
-      <div key={banner._id}>
+      <Paper className="featuredPost" key={banner._id}>
         <img src={"img/upload/" + banner._id + ".jpg"} alt="banner" />
-      </div>
+      </Paper>
     ));
   }
 
   renderPosts() {
     const posts = this.state.posts ? this.state.posts : [];
     return posts.map(post => (
-      <div key={post._id}>
-        <img src={"img/upload/" + post._id + ".jpg"} alt="banner" />
-      </div>
+      <Card className="post">
+        <div className="postDetails">
+          <CardContent>
+            <Typography component="h2" variant="h5">
+              {post.title}
+            </Typography>
+            <Typography variant="subtitle1" color="textSecondary">
+              {post._id.generation_time}
+            </Typography>
+            <Typography variant="subtitle1" paragraph>
+              {post.content}
+            </Typography>
+            <Typography variant="subtitle1" color="primary">
+              Continue reading...
+            </Typography>
+          </CardContent>
+        </div>
+        <Hidden xsDown>
+          <CardMedia
+            className="postMedia"
+            image={post._id + ".jpg"}
+            title={post.title}
+          />
+        </Hidden>
+      </Card>
     ));
   }
 
   render() {
     return (
-      <div className="App">
-        <Toolbar className="NavBar">
+      <div className="app">
+        <Toolbar className="navBar">
           <Typography
             component="h2"
             variant="h5"
             color="inherit"
             align="center"
             noWrap
-            className="AppTitle"
+            className="appTitle"
           >
             SimpleCMS
           </Typography>
           {this.renderUserOrLoginButton()}
         </Toolbar>
-        <Toolbar variant="dense" className="PagesBar">
+        <Toolbar variant="dense" className="pagesBar">
           {this.renderPages()}
         </Toolbar>
         <main>
-          <Slider className="Banner">{this.renderBanners()}</Slider>
+          <Slider className="banner">{this.renderBanners()}</Slider>
           <Grid container spacing={40} className="mainGrid">
             <Grid item xs={12} md={8}>
               <Typography variant="h6" gutterBottom>
@@ -220,24 +247,55 @@ class App extends Component {
             <Grid item xs={12} md={4}>
               <Paper elevation={0} className="sidebarAboutBox">
                 <Typography variant="h6" gutterBottom>
-                  Sobre
+                  About
                 </Typography>
                 <Typography>
-                  CMS pequeno e simples escrito em NodeJS com ReactJS e MongoDB.
+                  Lightweight CMS written in NodeJS with ReactJS and MongoDB.
                 </Typography>
               </Paper>
             </Grid>
           </Grid>
         </main>
+        <footer className="footer">
+          <Grid container spacing={40}>
+            <Grid item x2={12} md={6}>
+              <Typography variant="h6" align="center" gutterBottom>
+                Location
+              </Typography>
+            </Grid>
+            <Grid item sm={6} md={4} lg={3}>
+              <Typography variant="h6" align="center" gutterBottom>
+                Contact Us
+              </Typography>
+              <TextField
+                required
+                id="email"
+                name="email"
+                label="E-mail"
+                fullWidth
+                autoComplete="email"
+              />
+              <TextField
+                required
+                id="message"
+                name="message"
+                label="Message"
+                fullWidth
+                autoComplete="msg"
+                multiline
+                rowsMax="5"
+              />
+              <Button
+                variant="contained"
+                onClick={this.handleNext}
+                className="button"
+              >
+                Send
+              </Button>
+            </Grid>
+          </Grid>
+        </footer>
       </div>
-      /*<footer className={classes.footer}>
-        <Typography variant="h6" align="center" gutterBottom>
-          Footer
-        </Typography>
-        <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
-          Something here to give the footer a purpose!
-        </Typography>
-      </footer>*/
     );
   }
 }

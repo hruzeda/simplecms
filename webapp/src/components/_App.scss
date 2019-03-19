@@ -1,5 +1,4 @@
-.App {
-  text-align: center;
+.app {
   width: auto;
   margin-left: 16px;
   margin-right: 16px;
@@ -10,24 +9,24 @@
     margin-right: auto;
   }
 
-  .NavBar {
+  .navBar {
     border-bottom: 1px solid #e0e0e0;
   }
 
-  .AppTitle {
+  .appTitle {
     flex-basis: 100%;
   }
 
-  .UserOrLoginButton {
+  .userOrLoginButton {
     position: absolute;
     right: 24px;
   }
 
-  .PagesBar {
+  .pagesBar {
     justify-content: space-around;
   }
 
-  .Banner {
+  .banner {
     .slick-prev {
       left: 24px;
       z-index: 1;
@@ -35,10 +34,9 @@
     .slick-next {
       right: 24px;
     }
-    div {
-      width: 100%;
+    .featuredPost {
       height: 320px;
-      background: #606060;
+      background: #424242;
       img {
         margin: 0 auto;
         height: 100%;
@@ -48,10 +46,35 @@
 
   .mainGrid {
     margin-top: 24px;
+
+    .sidebarAboutBox {
+      padding: 16px;
+      background-color: #eee;
+    }
+
+    .post {
+      /*margin-top: 6px;
+      padding: 16px 0;*/
+      display: flex;
+    }
+
+    .postDetails {
+      flex: 1;
+    }
+
+    .postMedia {
+      width: 160px;
+      background: #424242;
+    }
   }
 
-  .sidebarAboutBox {
-    padding: 16px;
-    background-color: #eee;
+  .footer {
+    background-color: #fff;
+    margin-top: 64px;
+    padding: 48px;
+
+    .button {
+      margin-top: 16px;
+    }
   }
 }
