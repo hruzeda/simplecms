@@ -1,3 +1,13 @@
+.modal {
+  position: absolute;
+  width: 40%;
+  padding: 16px;
+  outline: 'none';
+  top: 25%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
 .app {
   width: auto;
   margin-left: 16px;
@@ -31,12 +41,15 @@
       left: 24px;
       z-index: 1;
     }
+
     .slick-next {
       right: 24px;
     }
+
     .featuredPost {
       height: 320px;
       background: #424242;
+
       img {
         margin: 0 auto;
         height: 100%;
@@ -49,7 +62,7 @@
 
     .sidebarAboutBox {
       padding: 16px;
-      background-color: #eee;
+      background-color: #e0e0e0;
     }
 
     .post {

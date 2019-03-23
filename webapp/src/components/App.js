@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-//import LoginForm from "./LoginForm";
 import axios from "axios";
 import Button from "@material-ui/core/Button";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -15,6 +14,8 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Hidden from "@material-ui/core/Hidden";
 import TextField from "@material-ui/core/TextField";
+import LoginForm from "./login/LoginForm";
+import CustomDialog from "./CustomDialog";
 
 class App extends Component {
   constructor(props) {
@@ -25,13 +26,14 @@ class App extends Component {
       //user: localStorage.user ? JSON.parse(localStorage.user) : null,
       pages: null,
       banners: null,
-      posts: null
+      posts: null,
+      loginDialogOpen: false
     };
-    //this.login = this.login.bind(this);
-    //this.logout = this.logout.bind(this);
+    this.login = this.login.bind(this);
+    this.logout = this.logout.bind(this);
   }
 
-  componentDidMount() {
+  componentDidMount = () => {
     /*if (this.state.user == null) {
       this.loadUsers();
     }*/
@@ -44,7 +46,7 @@ class App extends Component {
     if (this.state.posts == null) {
       this.loadPosts();
     }
-  }
+  };
 
   /*loadUsers() {
     axios.defaults.withCredentials = true;
@@ -58,57 +60,70 @@ class App extends Component {
       .catch(error => {
         console.log(error);
       });
-  }
-  
-  login(user) {
-    localStorage.user = JSON.stringify(user);
-    this.setState({
-      user: user
-    });
-  }
+  }*/
+  openLoginDialog = () => {
+    this.setState({ loginDialogOpen: true });
+  };
 
-  logout() {
+  closeLoginDialog = () => {
+    this.setState({ loginDialogOpen: false });
+  };
+
+  login = user => {
+    localStorage.user = JSON.stringify(user);
+    this.setState({ user: user });
+  };
+
+  logout = () => {
     axios.defaults.withCredentials = true;
     axios
       .get("http://localhost:3001/users/logout")
       .then(response => {
         localStorage.user = null;
-        this.setState({
-          user: null
-        });
+        this.setState({ user: null });
         this.loadUserList();
       })
       .catch(error => {
         console.log(error);
       });
-  }*/
+  };
 
-  renderUserOrLoginButton() {
+  renderUserOrLoginButton = () => {
     if (this.state.user) {
       return (
         <div>
           <p className="App-intro">
             {this.state.user.name}({this.state.user.email})
           </p>
-          <button onClick={this.logout}> Logout </button>
+          <button onClick={this.logout}>Logout</button>
         </div>
       );
     } else {
       return (
         <div className="UserOrLoginButton">
-          <IconButton>
+          <IconButton onClick={this.openLoginDialog}>
             <SettingsIcon />
           </IconButton>
         </div>
       );
-      /*<LoginForm
-        url="http://localhost:3001/users/authenticate"
-        onSuccess={this.login}
-      />*/
     }
-  }
+  };
 
-  loadPages() {
+  renderLoginDialog = () => {
+    return (
+      <CustomDialog
+        open={this.state.loginDialogOpen}
+        title="Administrative Area"
+        confirmText="Login"
+        confirmHandle={this.login}
+        closeHandle={this.closeLoginDialog}
+      >
+        <LoginForm url="http://localhost:3001/users/authenticate" />
+      </CustomDialog>
+    );
+  };
+
+  loadPages = () => {
     axios.defaults.withCredentials = true;
     axios
       .get("http://localhost:3001/pages")
@@ -125,9 +140,9 @@ class App extends Component {
       .catch(error => {
         console.log(error);
       });
-  }
+  };
 
-  loadBanners() {
+  loadBanners = () => {
     axios.defaults.withCredentials = true;
     axios
       .get("http://localhost:3001/banners")
@@ -144,9 +159,9 @@ class App extends Component {
       .catch(error => {
         console.log(error);
       });
-  }
+  };
 
-  loadPosts() {
+  loadPosts = () => {
     axios.defaults.withCredentials = true;
     axios
       .get("http://localhost:3001/posts")
@@ -163,27 +178,27 @@ class App extends Component {
       .catch(error => {
         console.log(error);
       });
-  }
+  };
 
-  renderPages() {
+  renderPages = () => {
     const pages = this.state.pages ? this.state.pages : [];
     return pages.map(page => (
       <Button size="small" key={page._id}>
         {page.title}
       </Button>
     ));
-  }
+  };
 
-  renderBanners() {
+  renderBanners = () => {
     const banners = this.state.banners ? this.state.banners : [];
     return banners.map(banner => (
       <Paper className="featuredPost" key={banner._id}>
         <img src={"img/upload/" + banner._id + ".jpg"} alt="banner" />
       </Paper>
     ));
-  }
+  };
 
-  renderPosts() {
+  renderPosts = () => {
     const posts = this.state.posts ? this.state.posts : [];
     return posts.map(post => (
       <Card className="post" key={post._id}>
@@ -212,92 +227,96 @@ class App extends Component {
         </Hidden>
       </Card>
     ));
-  }
+  };
 
-  render() {
+  render = () => {
     return (
-      <div className="app">
-        <Toolbar className="navBar">
-          <Typography
-            component="h2"
-            variant="h5"
-            color="inherit"
-            align="center"
-            noWrap
-            className="appTitle"
-          >
-            SimpleCMS
-          </Typography>
-          {this.renderUserOrLoginButton()}
-        </Toolbar>
-        <Toolbar variant="dense" className="pagesBar">
-          {this.renderPages()}
-        </Toolbar>
-        <main>
-          <Slider className="banner">{this.renderBanners()}</Slider>
-          <Grid container spacing={40} className="mainGrid">
-            <Grid item xs={12} md={8}>
-              <Typography variant="h6" gutterBottom>
-                Posts
-              </Typography>
-              <Divider />
-              {this.renderPosts()}
-            </Grid>
+      <div>
+        {this.renderLoginDialog()}
 
-            <Grid item xs={12} md={4}>
-              <Paper elevation={0} className="sidebarAboutBox">
+        <div className="app">
+          <Toolbar className="navBar">
+            <Typography
+              component="h2"
+              variant="h5"
+              color="inherit"
+              align="center"
+              noWrap
+              className="appTitle"
+            >
+              SimpleCMS
+            </Typography>
+            {this.renderUserOrLoginButton()}
+          </Toolbar>
+          <Toolbar variant="dense" className="pagesBar">
+            {this.renderPages()}
+          </Toolbar>
+          <main>
+            <Slider className="banner">{this.renderBanners()}</Slider>
+            <Grid container spacing={40} className="mainGrid">
+              <Grid item xs={12} md={8}>
                 <Typography variant="h6" gutterBottom>
-                  About
+                  Posts
                 </Typography>
-                <Typography>
-                  Lightweight CMS written in NodeJS with ReactJS and MongoDB.
+                <Divider />
+                {this.renderPosts()}
+              </Grid>
+
+              <Grid item xs={12} md={4}>
+                <Paper elevation={0} className="sidebarAboutBox">
+                  <Typography variant="h6" gutterBottom>
+                    About
+                  </Typography>
+                  <Typography>
+                    Lightweight CMS written in NodeJS with ReactJS and MongoDB.
+                  </Typography>
+                </Paper>
+              </Grid>
+            </Grid>
+          </main>
+          <footer className="footer">
+            <Grid container spacing={40}>
+              <Grid item x2={12} md={6}>
+                <Typography variant="h6" align="center" gutterBottom>
+                  Location
                 </Typography>
-              </Paper>
+              </Grid>
+              <Grid item sm={12} md={6}>
+                <Typography variant="h6" align="center" gutterBottom>
+                  Contact Us
+                </Typography>
+                <TextField
+                  required
+                  id="email"
+                  name="email"
+                  label="E-mail"
+                  fullWidth
+                  autoComplete="email"
+                />
+                <TextField
+                  required
+                  id="message"
+                  name="message"
+                  label="Message"
+                  fullWidth
+                  autoComplete="msg"
+                  multiline
+                  rowsMax="5"
+                />
+                <Button
+                  variant="contained"
+                  onClick={this.handleNext}
+                  className="button"
+                >
+                  Send
+                </Button>
+              </Grid>
             </Grid>
-          </Grid>
-        </main>
-        <footer className="footer">
-          <Grid container spacing={40}>
-            <Grid item x2={12} md={6}>
-              <Typography variant="h6" align="center" gutterBottom>
-                Location
-              </Typography>
-            </Grid>
-            <Grid item sm={6} md={4} lg={3}>
-              <Typography variant="h6" align="center" gutterBottom>
-                Contact Us
-              </Typography>
-              <TextField
-                required
-                id="email"
-                name="email"
-                label="E-mail"
-                fullWidth
-                autoComplete="email"
-              />
-              <TextField
-                required
-                id="message"
-                name="message"
-                label="Message"
-                fullWidth
-                autoComplete="msg"
-                multiline
-                rowsMax="5"
-              />
-              <Button
-                variant="contained"
-                onClick={this.handleNext}
-                className="button"
-              >
-                Send
-              </Button>
-            </Grid>
-          </Grid>
-        </footer>
+          </footer>
+        </div>
       </div>
     );
-  }
+  };
 }
 
 export default App;

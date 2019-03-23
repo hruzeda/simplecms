@@ -1,5 +1,6 @@
-import React, { Component } from "react";
 import axios from "axios";
+import React, { Component } from "react";
+import TextField from "@material-ui/core/TextField";
 
 class LoginForm extends Component {
   constructor(props) {
@@ -48,21 +49,25 @@ class LoginForm extends Component {
   render() {
     return (
       <form className="LoginForm" onSubmit={this.onSubmit}>
-        <input
+        <TextField
+          autoFocus
+          margin="dense"
+          id="name"
+          label="E-mail Address"
           type="email"
-          name="email"
-          placeholder="E-mail"
+          fullWidth
           value={this.state.email}
           onChange={this.emailChange}
         />
-        <input
+        <TextField
+          margin="dense"
+          id="password"
           type="password"
-          name="password"
-          placeholder="Password"
+          label="Password"
+          fullWidth
           value={this.state.password}
           onChange={this.passwordChange}
         />
-        <input type="submit" value="Login" />
       </form>
     );
   }

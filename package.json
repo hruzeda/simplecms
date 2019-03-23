@@ -48,6 +48,7 @@
     "once": "1.4.0",
     "pbkdf2": "^3.0.17",
     "prettier": "^1.16.4",
+    "prop-types": "^15.7.2",
     "random-bytes": "^1.0.0",
     "react": "^16.8.4",
     "safe-buffer": "5.1.2",
