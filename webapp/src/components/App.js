@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
+import cookie from "react-cookies";
 import Button from "@material-ui/core/Button";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
@@ -14,8 +15,7 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Hidden from "@material-ui/core/Hidden";
 import TextField from "@material-ui/core/TextField";
-import LoginForm from "./login/LoginForm";
-import CustomDialog from "./CustomDialog";
+import LoginDialog from "./login/LoginDialog";
 
 class App extends Component {
   constructor(props) {
@@ -29,14 +29,13 @@ class App extends Component {
       posts: null,
       loginDialogOpen: false
     };
-    this.login = this.login.bind(this);
-    this.logout = this.logout.bind(this);
   }
 
   componentDidMount = () => {
-    /*if (this.state.user == null) {
-      this.loadUsers();
-    }*/
+    const cookieSession = cookie.load("simplecms");
+    if (cookieSession) {
+      this.setState({ user: true });
+    }
     if (this.state.pages == null) {
       this.loadPages();
     }
@@ -48,19 +47,6 @@ class App extends Component {
     }
   };
 
-  /*loadUsers() {
-    axios.defaults.withCredentials = true;
-    axios
-      .get("http://localhost:3001/users")
-      .then(response => {
-        this.setState({
-          users: JSON.stringify(response.data)
-        });
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  }*/
   openLoginDialog = () => {
     this.setState({ loginDialogOpen: true });
   };
@@ -69,9 +55,8 @@ class App extends Component {
     this.setState({ loginDialogOpen: false });
   };
 
-  login = user => {
-    localStorage.user = JSON.stringify(user);
-    this.setState({ user: user });
+  login = () => {
+    this.setState({ user: true });
   };
 
   logout = () => {
@@ -79,28 +64,25 @@ class App extends Component {
     axios
       .get("http://localhost:3001/users/logout")
       .then(response => {
-        localStorage.user = null;
         this.setState({ user: null });
-        this.loadUserList();
       })
       .catch(error => {
         console.log(error);
       });
   };
 
-  renderUserOrLoginButton = () => {
-    if (this.state.user) {
+  renderLoginOrLogoutButton = () => {
+    if (this.state.user === true) {
       return (
-        <div>
-          <p className="App-intro">
-            {this.state.user.name}({this.state.user.email})
-          </p>
-          <button onClick={this.logout}>Logout</button>
+        <div className="loginOrLogoutButton">
+          <Button size="small" onClick={this.logout}>
+            Logout
+          </Button>
         </div>
       );
     } else {
       return (
-        <div className="UserOrLoginButton">
+        <div className="loginOrLogoutButton">
           <IconButton onClick={this.openLoginDialog}>
             <SettingsIcon />
           </IconButton>
@@ -109,18 +91,19 @@ class App extends Component {
     }
   };
 
-  renderLoginDialog = () => {
-    return (
-      <CustomDialog
-        open={this.state.loginDialogOpen}
-        title="Administrative Area"
-        confirmText="Login"
-        confirmHandle={this.login}
-        closeHandle={this.closeLoginDialog}
-      >
-        <LoginForm url="http://localhost:3001/users/authenticate" />
-      </CustomDialog>
-    );
+  renderAdminOrLoginDialog = () => {
+    if (this.state.user === true) {
+      return <div className="cover" />;
+    } else {
+      return (
+        <LoginDialog
+          url="http://localhost:3001/users/authenticate"
+          open={this.state.loginDialogOpen}
+          callback={this.login}
+          closeHandle={this.closeLoginDialog}
+        />
+      );
+    }
   };
 
   loadPages = () => {
@@ -232,7 +215,7 @@ class App extends Component {
   render = () => {
     return (
       <div>
-        {this.renderLoginDialog()}
+        {this.renderAdminOrLoginDialog()}
 
         <div className="app">
           <Toolbar className="navBar">
@@ -246,7 +229,7 @@ class App extends Component {
             >
               SimpleCMS
             </Typography>
-            {this.renderUserOrLoginButton()}
+            {this.renderLoginOrLogoutButton()}
           </Toolbar>
           <Toolbar variant="dense" className="pagesBar">
             {this.renderPages()}

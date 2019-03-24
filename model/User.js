@@ -4,8 +4,6 @@ const randomBytes = require("random-bytes");
 
 const schema = new mongoose.Schema(
   {
-    name: String,
-    email: String,
     salt: String,
     encrypted_password: String
   },
@@ -26,24 +24,18 @@ class UserModel {
       .toString("hex");
   }
 
-  static authenticate(email, password, callback) {
-    this.findOne(
-      {
-        email
-      },
-      (err, user) => {
-        user.password = password;
-        if (err) callback(new Error("User not found."));
-        callback(
-          user.password ===
-            pbkdf2
-              .pbkdf2Sync(password, user.salt, 16, 16, "sha512")
-              .toString("hex")
-            ? user
-            : new Error("Wrong password.")
-        );
-      }
-    );
+  static authenticate(password, callback) {
+    this.findOne({}, (err, user) => {
+      if (err || user === undefined) callback(new Error("User not found."));
+      callback(
+        user.password ===
+          pbkdf2
+            .pbkdf2Sync(password, user.salt, 16, 16, "sha512")
+            .toString("hex")
+          ? user
+          : new Error("Wrong password.")
+      );
+    });
   }
 }
 

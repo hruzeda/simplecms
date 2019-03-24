@@ -20,26 +20,28 @@ router.get("/", function(req, res, next) {
 });
 
 router.get("/logout", function(req, res, next) {
-  req.session.user = null;
-  res.send("Success.");
+  req.session = null;
+  res.send(true);
 });
 
 router.post("/authenticate", function(req, res, next) {
-  body("email")
-    .isEmail()
-    .normalizeEmail();
-  body("password")
-    .not()
-    .isEmpty()
-    .trim()
-    .escape();
+  if (req.session.user === true) {
+    console.log("User already logged in");
+    res.send(true);
+  } else {
+    body("password")
+      .not()
+      .isEmpty()
+      .trim()
+      .escape();
 
-  User.authenticate(req.body.email, req.body.password, result => {
-    if (result instanceof User) {
-      req.session.user = result;
-      res.send(result);
-    } else res.send(result.message);
-  });
+    User.authenticate(req.body.password, result => {
+      if (result instanceof User) {
+        req.session.user = true;
+        res.send(true);
+      } else res.send(result.message);
+    });
+  }
 });
 
 module.exports = router;

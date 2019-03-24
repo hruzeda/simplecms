@@ -1,7 +1,8 @@
 const createError = require("http-errors");
 const cors = require("cors");
 const express = require("express");
-const session = require("express-session");
+const reactCookie = require("react-cookies");
+const cookieSession = require("cookie-session");
 const helmet = require("helmet");
 const logger = require("morgan");
 const mongoose = require("mongoose");
@@ -44,16 +45,13 @@ app.use(
 );
 
 app.use(
-  session({
-    secret: "nothx",
+  cookieSession({
+    secret: "#supersalt@",
     name: "simplecms",
-    resave: true,
-    saveUninitialized: true,
-    cookie: {
-      path: "/",
-      secure: false,
-      httpOnly: false
-    }
+    path: "/",
+    domain: "localhost",
+    secure: false,
+    httpOnly: false
   })
 );
 
@@ -78,6 +76,7 @@ app.use((err, req, res) => {
 
   // render the error page
   res.status(err.status || 500);
+  reactCookie.plugToRequest(req, res);
   res.render("error");
 });
 

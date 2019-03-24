@@ -1,11 +1,12 @@
-.modal {
-  position: absolute;
-  width: 40%;
-  padding: 16px;
-  outline: 'none';
-  top: 25%;
-  left: 50%;
-  transform: translateX(-50%);
+.cover {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #000;
+  opacity: .25;
+  z-index: 200;
 }
 
 .app {
@@ -20,7 +21,9 @@
   }
 
   .navBar {
+    position: relative;
     border-bottom: 1px solid #e0e0e0;
+    z-index: 201;
   }
 
   .appTitle {
@@ -33,17 +36,20 @@
   }
 
   .pagesBar {
+    position: relative;
     justify-content: space-around;
+    z-index: 201;
   }
 
   .banner {
     .slick-prev {
       left: 24px;
-      z-index: 1;
+      z-index: 201;
     }
 
     .slick-next {
       right: 24px;
+      z-index: 201;
     }
 
     .featuredPost {
