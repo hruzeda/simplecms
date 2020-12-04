@@ -43,7 +43,7 @@
     "minimatch": "3.0.4",
     "minimist": "1.2.3",
     "mkdirp": "0.5.1",
-    "mongoose": "^5.4.19",
+    "mongoose": "^5.7.5",
     "morgan": "~1.9.1",
     "once": "1.4.0",
     "pbkdf2": "^3.0.17",
