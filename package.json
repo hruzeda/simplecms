@@ -15,7 +15,7 @@
     "start": "npm run start-back && npm run start-front"
   },
   "dependencies": {
-    "ansi-regex": "4.1.0",
+    "ansi-regex": "6.0.1",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
     "babel-env": "^2.4.1",
