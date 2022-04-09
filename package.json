@@ -41,7 +41,7 @@
     "http-errors": "~1.7.2",
     "inherits": "2.0.3",
     "minimatch": "3.0.4",
-    "minimist": "1.2.3",
+    "minimist": "1.2.6",
     "mkdirp": "0.5.1",
     "mongoose": "^5.7.5",
     "morgan": "~1.9.1",
